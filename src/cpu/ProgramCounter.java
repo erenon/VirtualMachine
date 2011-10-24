@@ -1,6 +1,6 @@
 package cpu;
 
-public class ProgramCounter {
+class ProgramCounter {
 	private int state = 0;
 	
 	public int getState() {

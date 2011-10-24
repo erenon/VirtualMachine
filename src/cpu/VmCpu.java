@@ -1,9 +1,10 @@
 package cpu;
 
+import device.AddressingException;
 import device.Bus;
 
 public class VmCpu implements Cpu, InstructionRunner {
-	private Bus bus;
+	private Bus bus = null;
 	private ProgramCounter pc = new ProgramCounter();
 	private boolean doesProgramEnded = false;
 	
@@ -13,14 +14,20 @@ public class VmCpu implements Cpu, InstructionRunner {
 	}
 
 	@Override
-	public void start() {
+	public void start() throws NoBusSetException {
+		if (bus == null) {
+			throw new NoBusSetException();
+		}
 		// while !doesProgramEnded
 		while (doesProgramEnded == false) {
 			// store pc current state
 			int currentPcState = pc.getState();
 			
 			// fetch instruction from memory pointed by pc
+			// using bus
 			// TODO here we are
+			String word = fetchWord(currentPcState);
+			// id instruction
 			// execute instruction
 			
 			// increment pc if not jump
@@ -30,10 +37,18 @@ public class VmCpu implements Cpu, InstructionRunner {
 		}
 	}
 	
-	/*public String fetchWordByPosition(int memoryPosition) {
-
-		return null;
-	}*/
+	public String fetchWord(int address) {
+		String word = null;
+		try {
+			word = bus.getWord(address);
+		} catch (AddressingException e) {
+			// TODO Auto-generated catch block
+			// call hw exception routine
+			e.printStackTrace();
+		}
+		
+		return word;
+	}
 
 	@Override
 	public void exit() {
