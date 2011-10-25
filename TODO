@@ -1,0 +1,10 @@
+ - console output device
+ - parameter interface, implementation
+ 	- recursive parameter id (MEM[%eax])
+ - instruction runner interface
+ 	- memory bus
+ 	- registers
+ 	- program counter
+ 	- how to exit?
+ - instruction interface, implementations
+ 
