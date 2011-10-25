@@ -1,6 +1,6 @@
 package device;
 
-public class VmMemory implements Device, InputDevice, OutputDevice {
+public class VmMemory implements InputDevice, OutputDevice {
 	private String[] memory;
 	private int blockSize;
 	
