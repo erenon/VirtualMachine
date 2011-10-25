@@ -4,6 +4,7 @@ import cpu.Cpu;
 import cpu.NoBusSetException;
 import device.AddressingException;
 import device.Bus;
+import device.StdOut;
 import device.VmBus;
 import device.VmMemory;
 
@@ -23,8 +24,11 @@ public class Computer {
 		memory.putWord(0, "PUT 1024 MEM[1]");
 		memory.putWord(1, "Hello World!");
 		
+		StdOut display = new StdOut();
+		
 		Bus bus = new VmBus();
 		bus.addDevice(0, memory);
+		bus.addDevice(1024, display);
 		
 		cpu.setBus(bus);
 		cpu.start();
