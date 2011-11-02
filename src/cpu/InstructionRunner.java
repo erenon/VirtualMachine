@@ -1,5 +1,5 @@
 package cpu;
 
-interface InstructionRunner {
+public interface InstructionRunner {
 	public void exit();
 }

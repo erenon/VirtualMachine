@@ -1,5 +1,8 @@
 package cpu.instpar;
 
-public interface InstructionParameter {
+import cpu.InstructionRunner;
 
+public interface InstructionParameter {
+	/** TODO give a better name to that exception */  
+	public void loadValue(InstructionRunner runner) throws Exception;
 }
