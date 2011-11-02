@@ -1,4 +1,3 @@
- - console output device
  - parameter interface, implementation
  	- recursive parameter id (MEM[%eax])
  - instruction runner interface
