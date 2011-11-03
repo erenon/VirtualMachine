@@ -1,7 +1,11 @@
 package cpu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import util.Entry;
 import cpu.instpar.InstructionParameter;
+import cpu.instpar.InvalidParameterException;
 import cpu.instruction.Instruction;
 import device.AddressingException;
 import device.Bus;
@@ -11,9 +15,16 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private ProgramCounter pc = new ProgramCounter();
 	private InstructionIdentifier id = new InstructionIdentifier();
 	private boolean doesProgramEnded = false;
+	private Map<REGISTER_NAME, Integer> registers;
 	
 	public VmCpu() {
 		// TODO load available instructions
+		
+		// init registers
+		registers = new HashMap<InstructionRunner.REGISTER_NAME, Integer>();
+		for (REGISTER_NAME name : REGISTER_NAME.values()) {
+			registers.put(name, 0);
+		}
 	}
 	
 	@Override
@@ -47,7 +58,13 @@ public class VmCpu implements Cpu, InstructionRunner {
 			
 			// load instruction parameters
 			for (InstructionParameter parameter : instruction.getValue()) {
-				// parameter.loadValue(...resources...);
+				try {
+					parameter.loadValue(this);
+				} catch (InvalidParameterException e) {
+					// TODO Auto-generated catch block
+					// call sw exception routine
+					e.printStackTrace();
+				}
 			}
 			
 			// execute instruction
@@ -75,6 +92,15 @@ public class VmCpu implements Cpu, InstructionRunner {
 	@Override
 	public void exit() {
 		doesProgramEnded = true;
+	}
+
+	@Override
+	public int getRegisterContent(REGISTER_NAME registerName) throws InvalidRegisterException {
+		if (registers.containsKey(registerName)) {
+			return registers.get(registerName);
+		} else {
+			throw new InvalidRegisterException();
+		}
 	}
 
 }
