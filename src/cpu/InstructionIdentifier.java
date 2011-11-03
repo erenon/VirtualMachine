@@ -53,14 +53,7 @@ class InstructionIdentifier {
 		
 		int parameterIndex = 0;
 		for (String parameter : rawParameters) {
-			if (parameter.charAt(0) == '%') {
-				parameters[parameterIndex] = new RegisterParameter(parameter);
-			} else if (parameter.startsWith("MEM[")) {
-				parameters[parameterIndex] = new MemoryParameter(parameter);
-			} else {
-				parameters[parameterIndex] = new ImmediateParameter(parameter);
-			}
-			
+			parameters[parameterIndex] = identifyParameter(parameter);
 			parameterIndex++;
 		}
 		
@@ -68,5 +61,19 @@ class InstructionIdentifier {
 			new Entry<Instruction, InstructionParameter[]>(instruction, parameters);
 		
 		return instructionWithParameters;
+	}
+	
+	public InstructionParameter identifyParameter(String parameter) {
+		InstructionParameter identifiedParameter = null;
+		
+		if (parameter.charAt(0) == '%') {
+			identifiedParameter = new RegisterParameter(parameter);
+		} else if (parameter.startsWith("MEM[")) {
+			identifiedParameter = new MemoryParameter(parameter);
+		} else {
+			identifiedParameter = new ImmediateParameter(parameter);
+		}
+		
+		return identifiedParameter;
 	}
 }
