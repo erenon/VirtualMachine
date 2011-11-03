@@ -15,7 +15,7 @@ public class VmBusTest {
 
 	@Test
 	public void testPutWord() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented"); // TODO implement testPutWord
 	}
 
 	@Test
