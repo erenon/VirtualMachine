@@ -21,8 +21,12 @@ public class Computer {
 		}
 
 		VmMemory memory = new VmMemory(1024);
-		memory.putWord(0, "PUT 1024 MEM[1]");
-		memory.putWord(1, "Hello World!");
+		memory.putWord(0, "PUT 1024 MEM[3]");
+		memory.putWord(1, "PUT 1024 MEM[4]");
+		memory.putWord(2, "PUT 1024 MEM[5]");
+		memory.putWord(3, "65");
+		memory.putWord(4, "66");
+		memory.putWord(5, "67");
 		
 		StdOut display = new StdOut();
 		
