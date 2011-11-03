@@ -38,22 +38,32 @@ public class VmBus extends Bus {
 	
 	@Override
 	public void putWord(int address, String word) throws AddressingException {
-		// TODO Auto-generated method stub
+		Entry<Integer, Device> deviceEntry = getDeviceEntry(address);
 		
+		// check for output device
+		if (deviceEntry.getValue() instanceof OutputDevice) {
+			OutputDevice device = (OutputDevice)deviceEntry.getValue();
+			int relativeAddress = address - deviceEntry.getKey();
+			
+			device.putWord(relativeAddress, word);
+		} else {
+			// selected device is not an output device.
+			throw new AddressingException();
+		}
 	}
 
 	@Override
 	public String getWord(int address) throws AddressingException {
 		Entry<Integer, Device> deviceEntry = getDeviceEntry(address);
 		
-		// check for inputDevice
+		// check for input device
 		if (deviceEntry.getValue() instanceof InputDevice) {
 			InputDevice device = (InputDevice)deviceEntry.getValue();
 			int relativeAddress = address - deviceEntry.getKey();
 			
 			return device.getWord(relativeAddress);
 		} else {
-			// selected device is not input device.
+			// selected device is not an input device.
 			throw new AddressingException();
 		}
 	}
