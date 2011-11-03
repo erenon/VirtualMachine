@@ -1,9 +1,8 @@
 package cpu;
 
+import cpu.instpar.InstructionParameter;
+
 public interface InstructionRunner {
-	@Deprecated
-	public void exit();
-	
 	public static enum REGISTER_NAME {
 		eax,
 		ebx,
@@ -16,4 +15,9 @@ public interface InstructionRunner {
 	}
 	
 	public int getRegisterContent(REGISTER_NAME registerName) throws InvalidRegisterException;
+	public InstructionParameter identifyInstructionParameter(String parameter);
+	public String fetchWord(int address);
+	public void putWord(int address, String word);
+	public void increaseStackframe();
+	public void decreaseStackframe();
 }

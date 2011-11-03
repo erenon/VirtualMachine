@@ -7,6 +7,9 @@ import util.Entry;
 import cpu.instpar.InstructionParameter;
 import cpu.instpar.InvalidParameterException;
 import cpu.instruction.Instruction;
+import cpu.instruction.InvalidInstructionException;
+import cpu.instruction.Out;
+import cpu.instruction.Ret;
 import device.AddressingException;
 import device.Bus;
 
@@ -14,11 +17,13 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private Bus bus = null;
 	private ProgramCounter pc = new ProgramCounter();
 	private InstructionIdentifier id = new InstructionIdentifier();
-	private boolean doesProgramEnded = false;
 	private Map<REGISTER_NAME, Integer> registers;
+	private int currentStackframeIndex;
 	
 	public VmCpu() {
-		// TODO load available instructions
+		// load available instructions
+		id.addInstruction("OUT", new Out());
+		id.addInstruction("RET", new Ret());
 		
 		// init registers
 		registers = new HashMap<InstructionRunner.REGISTER_NAME, Integer>();
@@ -37,8 +42,10 @@ public class VmCpu implements Cpu, InstructionRunner {
 		if (bus == null) {
 			throw new NoBusSetException();
 		}
+		
+		currentStackframeIndex = 1;
 		// while !doesProgramEnded
-		while (doesProgramEnded == false) {
+		while (currentStackframeIndex > 0) {
 			// store pc current state
 			int currentPcState = pc.getState();
 			
@@ -47,27 +54,34 @@ public class VmCpu implements Cpu, InstructionRunner {
 			String word = fetchWord(currentPcState);
 			
 			// id instruction
-			Entry<Instruction, InstructionParameter[]> instruction = null;
+			Entry<Instruction, InstructionParameter[]> instructionWithParameters = null;
 			try {
-				instruction = id.identify(word);
+				instructionWithParameters = id.identify(word);
 			} catch (UnidentifiableInstructionException e) {
-				// TODO Auto-generated catch block
-				// call sw exception routine
+				// TODO call sw exception routine
 				e.printStackTrace();
 			}
 			
+			Instruction instruction = instructionWithParameters.getKey();
+			InstructionParameter[] parameters = instructionWithParameters.getValue();
+			
 			// load instruction parameters
-			for (InstructionParameter parameter : instruction.getValue()) {
+			for (InstructionParameter parameter : parameters) {
 				try {
 					parameter.loadValue(this);
 				} catch (InvalidParameterException e) {
-					// TODO Auto-generated catch block
-					// call sw exception routine
+					// TODO call sw exception routine
 					e.printStackTrace();
 				}
 			}
 			
 			// execute instruction
+			try {
+				instruction.execute(this, parameters);
+			} catch (InvalidInstructionException e) {
+				// TODO call sw exception routine
+				e.printStackTrace();
+			}
 			
 			// increment pc if not jump
 			if (currentPcState == pc.getState()) {
@@ -81,17 +95,20 @@ public class VmCpu implements Cpu, InstructionRunner {
 		try {
 			word = bus.getWord(address);
 		} catch (AddressingException e) {
-			// TODO Auto-generated catch block
-			// call sw exception routine
+			// TODO call sw exception routine
 			e.printStackTrace();
 		}
 		
 		return word;
 	}
-
-	@Override
-	public void exit() {
-		doesProgramEnded = true;
+	
+	public void putWord(int address, String word) {
+		try {
+			bus.putWord(address, word);
+		} catch (AddressingException e) {
+			// TODO call sw exception routine
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -101,6 +118,23 @@ public class VmCpu implements Cpu, InstructionRunner {
 		} else {
 			throw new InvalidRegisterException();
 		}
+	}
+
+	@Override
+	public InstructionParameter identifyInstructionParameter(String parameter) {
+		return id.identifyParameter(parameter);
+	}
+
+	@Override
+	public void increaseStackframe() {
+		currentStackframeIndex++;
+		// TODO manage the actual stackframe
+	}
+
+	@Override
+	public void decreaseStackframe() {
+		currentStackframeIndex--;
+		// TODO manage the actual stackframe
 	}
 
 }
