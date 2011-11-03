@@ -1,5 +1,11 @@
 package cpu.instruction;
 
-public interface Instruction {
+import cpu.InstructionRunner;
+import cpu.instpar.InstructionParameter;
 
+public interface Instruction {
+	public void execute(
+		InstructionRunner runner, 
+		InstructionParameter[] parameters
+	) throws InvalidInstructionException;
 }
