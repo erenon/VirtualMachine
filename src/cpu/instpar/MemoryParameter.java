@@ -4,7 +4,6 @@ import cpu.InstructionRunner;
 
 public class MemoryParameter implements InstructionParameter {
 	private String indirectAddress;
-	private int loadedValue;
 	
 	/**
 	 * @param memoryAddressExpression e.g: MEM[123], MEM[%eax], MEM[MEM[%ebx]]
@@ -15,24 +14,28 @@ public class MemoryParameter implements InstructionParameter {
 		int endIndex = memoryAddressExpression.length() - 1;
 		indirectAddress = memoryAddressExpression.substring(beginIndex, endIndex);
 	}
+	
+	private int resolveAddress(InstructionRunner runner) throws InvalidParameterException {
+		InstructionParameter addressParameter = runner.identifyInstructionParameter(indirectAddress);
+		return addressParameter.loadValue(runner);
+	}
 
 	@Override
-	public void loadValue(InstructionRunner runner) throws InvalidParameterException {
-		InstructionParameter addressParameter = runner.identifyInstructionParameter(indirectAddress);
-		addressParameter.loadValue(runner);
-		int address = addressParameter.getValue();
+	public int loadValue(InstructionRunner runner) throws InvalidParameterException {
+		int address = resolveAddress(runner);
 		
 		// fetch value from address
 		String word = runner.fetchWord(address);
 		try {
-			loadedValue = Integer.parseInt(word);
+			return Integer.parseInt(word);
 		} catch (NumberFormatException e) {
 			throw new InvalidParameterException();
 		}
 	}
 
 	@Override
-	public int getValue() {
-		return loadedValue;
+	public void storeValue(InstructionRunner runner, int value) throws InvalidParameterException {
+		int address = resolveAddress(runner);
+		runner.putWord(address, Integer.toString(value));
 	}
 }

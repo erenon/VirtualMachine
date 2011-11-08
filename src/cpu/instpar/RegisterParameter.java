@@ -6,7 +6,6 @@ import cpu.InvalidRegisterException;
 
 public class RegisterParameter implements InstructionParameter {
 	private REGISTER_NAME register;
-	private int loadedValue;
 	
 	/**
 	 * @param registerName e.g: %eax
@@ -16,16 +15,20 @@ public class RegisterParameter implements InstructionParameter {
 	}
 
 	@Override
-	public void loadValue(InstructionRunner runner) throws InvalidParameterException {
+	public int loadValue(InstructionRunner runner) throws InvalidParameterException {
 		try {
-			loadedValue = runner.getRegisterContent(register);
+			return runner.getRegisterContent(register);
 		} catch (InvalidRegisterException e) {
 			throw new InvalidParameterException();
 		}
 	}
 
 	@Override
-	public int getValue() {
-		return loadedValue;
+	public void storeValue(InstructionRunner runner, int value) throws InvalidParameterException {
+		try {
+			runner.setRegisterContent(register, value);
+		} catch (InvalidRegisterException e) {
+			throw new InvalidParameterException();
+		}
 	}
 }
