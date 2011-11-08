@@ -10,6 +10,8 @@ import cpu.instruction.Instruction;
 import cpu.instruction.InvalidInstructionException;
 import cpu.instruction.Mov;
 import cpu.instruction.Out;
+import cpu.instruction.Pop;
+import cpu.instruction.Push;
 import cpu.instruction.Ret;
 import device.AddressingException;
 import device.Bus;
@@ -19,12 +21,14 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private ProgramCounter pc = new ProgramCounter();
 	private InstructionIdentifier id = new InstructionIdentifier();
 	private Map<REGISTER_NAME, Integer> registers;
-	private int currentStackframeIndex;
+	private VmStack stack = new VmStack();
 	
 	public VmCpu() {
 		// load available instructions
 		id.addInstruction("MOV", new Mov());
 		id.addInstruction("OUT", new Out());
+		id.addInstruction("POP", new Pop());
+		id.addInstruction("PUSH", new Push());
 		id.addInstruction("RET", new Ret());
 		
 		// init registers
@@ -45,9 +49,8 @@ public class VmCpu implements Cpu, InstructionRunner {
 			throw new NoBusSetException();
 		}
 		
-		currentStackframeIndex = 1;
-		// while !doesProgramEnded
-		while (currentStackframeIndex > 0) {
+		// while the are stack frames
+		while (stack.getCurrentFrameIndex() >= 0) {
 			// store pc current state
 			int currentPcState = pc.getState();
 			
@@ -131,14 +134,22 @@ public class VmCpu implements Cpu, InstructionRunner {
 
 	@Override
 	public void increaseStackframe() {
-		currentStackframeIndex++;
-		// TODO manage the actual stackframe
+		stack.increaseStackFrame();
 	}
 
 	@Override
 	public void decreaseStackframe() {
-		currentStackframeIndex--;
-		// TODO manage the actual stackframe
+		stack.decreaseStackFrame();
+	}
+
+	@Override
+	public void pushStack(int value) {
+		stack.push(value);
+	}
+
+	@Override
+	public int popStack() {
+		return stack.pop();
 	}
 
 }

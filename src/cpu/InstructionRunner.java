@@ -21,4 +21,6 @@ public interface InstructionRunner {
 	public void putWord(int address, String word);
 	public void increaseStackframe();
 	public void decreaseStackframe();
+	public void pushStack(int value);
+	public int popStack();
 }
