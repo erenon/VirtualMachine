@@ -21,13 +21,14 @@ public class Computer {
 		}
 
 		VmMemory memory = new VmMemory(1024);
-		memory.putWord(0, "OUT 1024 MEM[4]");
-		memory.putWord(1, "OUT 1024 MEM[5]");
-		memory.putWord(2, "OUT 1024 MEM[6]");
-		memory.putWord(3, "RET");
-		memory.putWord(4, "65");
-		memory.putWord(5, "66");
-		memory.putWord(6, "67");
+		memory.putWord(0, "OUT 1024 MEM[6]");
+		memory.putWord(1, "MOV MEM[7] %ebx");
+		memory.putWord(2, "OUT 1024 %ebx");
+		memory.putWord(3, "MOV 67 %eax");
+		memory.putWord(4, "OUT 1024 %eax");
+		memory.putWord(5, "RET");
+		memory.putWord(6, "65");
+		memory.putWord(7, "66");
 		
 		StdOut display = new StdOut();
 		
