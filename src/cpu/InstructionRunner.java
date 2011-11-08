@@ -14,6 +14,14 @@ public interface InstructionRunner {
 		edi
 	}
 	
+	public static enum FLAG_NAME {
+		Carry,
+		Adjust,
+		Zero,
+		Negative,
+		Overflow
+	}
+	
 	public int getRegisterContent(REGISTER_NAME registerName) throws InvalidRegisterException;
 	public void setRegisterContent(REGISTER_NAME registerName, int content) throws InvalidRegisterException;
 	public InstructionParameter identifyInstructionParameter(String parameter);
@@ -23,4 +31,6 @@ public interface InstructionRunner {
 	public void decreaseStackframe();
 	public void pushStack(int value);
 	public int popStack();
+	public void setFlag(FLAG_NAME flag, boolean value) throws InvalidFlagException;
+	public boolean getFlag(FLAG_NAME flag) throws InvalidFlagException;
 }
