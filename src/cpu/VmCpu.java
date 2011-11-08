@@ -8,6 +8,7 @@ import cpu.instpar.InstructionParameter;
 import cpu.instpar.InvalidParameterException;
 import cpu.instruction.Instruction;
 import cpu.instruction.InvalidInstructionException;
+import cpu.instruction.Mov;
 import cpu.instruction.Out;
 import cpu.instruction.Ret;
 import device.AddressingException;
@@ -22,6 +23,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 	
 	public VmCpu() {
 		// load available instructions
+		id.addInstruction("MOV", new Mov());
 		id.addInstruction("OUT", new Out());
 		id.addInstruction("RET", new Ret());
 		
@@ -65,20 +67,13 @@ public class VmCpu implements Cpu, InstructionRunner {
 			Instruction instruction = instructionWithParameters.getKey();
 			InstructionParameter[] parameters = instructionWithParameters.getValue();
 			
-			// load instruction parameters
-			for (InstructionParameter parameter : parameters) {
-				try {
-					parameter.loadValue(this);
-				} catch (InvalidParameterException e) {
-					// TODO call sw exception routine
-					e.printStackTrace();
-				}
-			}
-			
 			// execute instruction
 			try {
 				instruction.execute(this, parameters);
 			} catch (InvalidInstructionException e) {
+				// TODO call sw exception routine
+				e.printStackTrace();
+			} catch (InvalidParameterException e) {
 				// TODO call sw exception routine
 				e.printStackTrace();
 			}
@@ -120,6 +115,15 @@ public class VmCpu implements Cpu, InstructionRunner {
 		}
 	}
 
+	@Override
+	public void setRegisterContent(REGISTER_NAME registerName, int content) throws InvalidRegisterException {
+		if (registers.containsKey(registerName)) {
+			registers.put(registerName, content);
+		} else {
+			throw new InvalidRegisterException();
+		}
+	}
+	
 	@Override
 	public InstructionParameter identifyInstructionParameter(String parameter) {
 		return id.identifyParameter(parameter);

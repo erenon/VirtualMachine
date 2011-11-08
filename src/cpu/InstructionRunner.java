@@ -15,6 +15,7 @@ public interface InstructionRunner {
 	}
 	
 	public int getRegisterContent(REGISTER_NAME registerName) throws InvalidRegisterException;
+	public void setRegisterContent(REGISTER_NAME registerName, int content) throws InvalidRegisterException;
 	public InstructionParameter identifyInstructionParameter(String parameter);
 	public String fetchWord(int address);
 	public void putWord(int address, String word);
