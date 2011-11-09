@@ -11,7 +11,7 @@ class ProgramCounter {
 		state++;
 	}
 	
-	public void jump(int position) {
-		state = position;
+	public void jump(int address) {
+		state = address;
 	}
 }
