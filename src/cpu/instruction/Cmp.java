@@ -20,7 +20,7 @@ public class Cmp implements Instruction {
 		int paramA = parameters[0].loadValue(runner);
 		int paramB = parameters[1].loadValue(runner);
 		
-		int diff = paramA - paramB;
+		long diff = ((long)paramA) - paramB;
 		
 		try {
 			
@@ -36,7 +36,16 @@ public class Cmp implements Instruction {
 				runner.setFlag(FLAG_NAME.Negative, false);
 			}
 			
-			// TODO handle overflow, carry, adjust
+			if (diff > Integer.MAX_VALUE) {
+		        runner.setFlag(FLAG_NAME.Overflow, true);
+		    } else if (diff < Integer.MIN_VALUE) {
+		    	// underflow
+		    	runner.setFlag(FLAG_NAME.Overflow, true);
+		    } else {
+		    	runner.setFlag(FLAG_NAME.Overflow, false);
+		    }
+			
+			// TODO handle carry, adjust
 			
 		} catch (InvalidFlagException e) {
 			// runner has no such flag
