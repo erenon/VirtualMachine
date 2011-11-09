@@ -29,7 +29,9 @@ public class Computer {
 		memory.putWord(5, "PUSH 68");
 		memory.putWord(6, "POP %ecx");
 		memory.putWord(7, "OUT 1024 %ecx");
-		memory.putWord(8, "RET");
+		memory.putWord(8, "JMP 10");
+		memory.putWord(9, "OUT 1024 %ecx");
+		memory.putWord(10, "RET");
 		
 		memory.putWord(20, "65");
 		memory.putWord(21, "66");
