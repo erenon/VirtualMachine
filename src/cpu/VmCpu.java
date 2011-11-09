@@ -10,6 +10,7 @@ import cpu.instruction.Cmp;
 import cpu.instruction.In;
 import cpu.instruction.Instruction;
 import cpu.instruction.InvalidInstructionException;
+import cpu.instruction.Jmp;
 import cpu.instruction.Mov;
 import cpu.instruction.Out;
 import cpu.instruction.Pop;
@@ -31,6 +32,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 		// load available instructions
 		id.addInstruction("CMP", new Cmp());
 		id.addInstruction("IN", new In());
+		id.addInstruction("JMP", new Jmp());
 		id.addInstruction("MOV", new Mov());
 		id.addInstruction("OUT", new Out());
 		id.addInstruction("POP", new Pop());
@@ -181,6 +183,11 @@ public class VmCpu implements Cpu, InstructionRunner {
 		} else {
 			throw new InvalidFlagException();
 		}
+	}
+
+	@Override
+	public void jump(int address) {
+		pc.jump(address);
 	}
 
 }
