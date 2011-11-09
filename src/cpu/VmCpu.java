@@ -183,4 +183,9 @@ public class VmCpu implements Cpu, InstructionRunner {
 		}
 	}
 
+	@Override
+	public void jump(int address) {
+		pc.jump(address);
+	}
+
 }
