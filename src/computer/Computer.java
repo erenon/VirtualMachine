@@ -15,6 +15,15 @@ public class Computer {
 		this.cpu = cpu;
 	}
 	
+	/**
+	 * Starts the virtual machine
+	 * 
+	 * @todo AddressingException is thrown by demo memory content write
+	 * 
+	 * @throws NoCpuSetException
+	 * @throws NoBusSetException
+	 * @throws AddressingException
+	 */
 	public void start() throws NoCpuSetException, NoBusSetException, AddressingException {
 		if (cpu == null) {
 			throw new NoCpuSetException();

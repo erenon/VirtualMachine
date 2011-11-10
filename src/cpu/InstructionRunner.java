@@ -22,6 +22,12 @@ public interface InstructionRunner {
 		Overflow
 	}
 	
+	/**
+	 * Gets the content of the selected register
+	 * @param registerName The name of the selected register
+	 * @return The content of the selected register
+	 * @throws InvalidRegisterException If no such register found
+	 */
 	public int getRegisterContent(REGISTER_NAME registerName) throws InvalidRegisterException;
 	public void setRegisterContent(REGISTER_NAME registerName, int content) throws InvalidRegisterException;
 	public InstructionParameter identifyInstructionParameter(String parameter);

@@ -36,6 +36,12 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private Map<FLAG_NAME, Boolean> flags;
 	private VmStack stack = new VmStack();
 	
+	/**
+	 * Initializes the CPU
+	 * 
+	 * Loads name-instruction mapping into id,
+	 * inits registers to 0, inits flags to false.
+	 */
 	public VmCpu() {
 		// load available instructions
 		id.addInstruction("CMP", new Cmp());

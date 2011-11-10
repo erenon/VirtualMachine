@@ -13,26 +13,51 @@ import cpu.instpar.RegisterParameter;
 import cpu.instruction.Instruction;
 
 class InstructionIdentifier {
-	private Map<String, Instruction> instructionNames;
+	/**
+	 * Stores name-instruction mapping
+	 */
+	private Map<String, Instruction> instructionPool;
 	
 	public InstructionIdentifier() {
-		instructionNames = new HashMap<String, Instruction>();
+		instructionPool = new HashMap<String, Instruction>();
 	}
 	
+	/**
+	 * Adds an instruction to the instruction pool.
+	 * 
+	 * @param name Name of the instruction used in assembly code
+	 * @param instruction Instruction instance
+	 */
 	public void addInstruction(String name, Instruction instruction) {
-		instructionNames.put(name, instruction);
+		instructionPool.put(name, instruction);
 	}
 	
+	/**
+	 * Gets the instruction from the instruction pool by name
+	 * 
+	 * @param instructionName
+	 * @return The instruction found
+	 * @throws UnidentifiableInstructionException if no instruction found with the given name
+	 */
 	private Instruction getInstruction(String instructionName) 
 		throws UnidentifiableInstructionException 
 	{
-		if (instructionNames.containsKey(instructionName)) {
-			return instructionNames.get(instructionName);
+		if (instructionPool.containsKey(instructionName)) {
+			return instructionPool.get(instructionName);
 		} else {
 			throw new UnidentifiableInstructionException();
 		}
 	}
 	
+	/**
+	 * Identifies the given assembly code line.
+	 * 
+	 * Gets the type of the instruction and the parameters
+	 * 
+	 * @param word Assembly code line
+	 * @return Entry of Instruction and parameters array
+	 * @throws UnidentifiableInstructionException If word is null or undefined instruction
+	 */
 	public Entry<Instruction, InstructionParameter[]> identify(String word) 
 		throws UnidentifiableInstructionException 
 	{
@@ -63,6 +88,17 @@ class InstructionIdentifier {
 		return instructionWithParameters;
 	}
 	
+	/**
+	 * Parses an instruction parameter
+	 * 
+	 * Parameters can be 
+	 *  - registers: %eax, %ebx, etc.
+	 *  - memory fields: MEM[%eax], MEM[15], MEM[MEM[...]], etc.
+	 *  - immediates: 0, 42, etc.
+	 * 
+	 * @param parameter String representation of the parameters
+	 * @return The identified parameter
+	 */
 	public InstructionParameter identifyParameter(String parameter) {
 		InstructionParameter identifiedParameter = null;
 		
