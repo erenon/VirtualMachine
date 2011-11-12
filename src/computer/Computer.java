@@ -4,15 +4,37 @@ import cpu.Cpu;
 import cpu.NoBusSetException;
 import device.AddressingException;
 import device.Bus;
+import device.Device;
 import device.StdOut;
 import device.VmBus;
 import device.VmMemory;
 
 public class Computer {
 	private Cpu cpu = null;
+	private Bus bus = new VmBus();
+	private int nextBusAddress = 0;
 
 	public void setCpu(Cpu cpu) {
 		this.cpu = cpu;
+	}
+	
+	public void addDevice(Device device, int addressWindowSize) {
+		bus.addDevice(nextBusAddress, device);
+		nextBusAddress += addressWindowSize;
+	}
+	
+	public void step() throws NoCpuSetException, NoBusSetException {
+		if (cpu == null) {
+			throw new NoCpuSetException();
+		}
+		
+		// TODO don't repeat this
+		cpu.setBus(bus);
+		cpu.step();
+	}
+	
+	public void reset() {
+		cpu.reset();
 	}
 	
 	/**
@@ -24,6 +46,7 @@ public class Computer {
 	 * @throws NoBusSetException
 	 * @throws AddressingException
 	 */
+	@Deprecated
 	public void start() throws NoCpuSetException, NoBusSetException, AddressingException {
 		if (cpu == null) {
 			throw new NoCpuSetException();
