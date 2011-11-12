@@ -11,8 +11,10 @@ import device.VmMemory;
 import ui.controller.ComputerController;
 import ui.model.DisplayModel;
 import ui.model.MemoryContentModel;
+import ui.model.RegisterContentModel;
 import ui.view.FrontView;
 import ui.view.MemoryContentView;
+import ui.view.RegisterContentView;
 
 public class UiApplication {
 	
@@ -31,6 +33,13 @@ public class UiApplication {
 		VmCpu cpu = new VmCpu();
 		InstructionRunner runner = (InstructionRunner) cpu;
 		computer.setCpu(cpu);
+		
+		// register observers
+		RegisterContentModel registerContentModel = new RegisterContentModel(runner);
+		cpu.addRegisterObserver(registerContentModel);
+		
+		view.setRegisterContentModel(registerContentModel);
+		view.setRegisterContentView(new RegisterContentView());
 		
 		// create memory
 		int memorySize = 1024;

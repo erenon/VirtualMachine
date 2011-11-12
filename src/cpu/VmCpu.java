@@ -39,6 +39,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private Map<FLAG_NAME, Boolean> flags;
 	private VmStack stack;
 	private Set<DeviceObserver> pcObservers = new HashSet<DeviceObserver>();
+	private Set<DeviceObserver> registerObservers = new HashSet<DeviceObserver>();
 	
 	/**
 	 * Initializes the CPU
@@ -85,6 +86,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 		registers = new HashMap<InstructionRunner.REGISTER_NAME, Integer>();
 		for (REGISTER_NAME register : REGISTER_NAME.values()) {
 			registers.put(register, 0);
+			notifyRegisterObservers(register);
 		}
 		
 		// reset flags
@@ -101,6 +103,28 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private void notifyPcObservers(int address) {
 		for (DeviceObserver observer : pcObservers) {
 			observer.fireDataChange(address);
+		}
+	}
+	
+	public void addRegisterObserver(DeviceObserver observer) {
+		registerObservers.add(observer);
+	}
+	
+	private void notifyRegisterObservers(REGISTER_NAME targetRegisterName) {
+		int targetRegisterIndex = 0;
+		
+		int registerIndex = 0;
+		for (REGISTER_NAME registerName : REGISTER_NAME.values()) {
+			if (targetRegisterName == registerName) {
+				targetRegisterIndex = registerIndex;
+				break;
+			}
+			
+			registerIndex++;
+		}
+		
+		for (DeviceObserver observer : registerObservers) {
+			observer.fireDataChange(targetRegisterIndex);
 		}
 	}
 	
@@ -204,6 +228,8 @@ public class VmCpu implements Cpu, InstructionRunner {
 	public void setRegisterContent(REGISTER_NAME registerName, int content) throws InvalidRegisterException {
 		if (registers.containsKey(registerName)) {
 			registers.put(registerName, content);
+			
+			notifyRegisterObservers(registerName);
 		} else {
 			throw new InvalidRegisterException();
 		}
