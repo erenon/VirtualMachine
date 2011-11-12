@@ -183,15 +183,21 @@ public class VmCpu implements Cpu, InstructionRunner {
 	}
 
 	@Override
-	public void start() throws NoBusSetException {
+	public void run() throws NoBusSetException {
 		if (bus == null) {
 			throw new NoBusSetException();
 		}
+		
+		int currentPcState = pc.getState();
 		
 		// while the are stack frames
 		while (stack.getCurrentFrameIndex() >= 0) {
 			executeNextInstruction();
 		}
+		
+		// notify pc observers about pc state change
+		notifyPcObservers(currentPcState);
+		notifyPcObservers(pc.getState());
 	}
 	
 	public String fetchWord(int address) {

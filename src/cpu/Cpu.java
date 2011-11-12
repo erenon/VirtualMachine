@@ -13,11 +13,11 @@ public interface Cpu {
 	public void step() throws NoBusSetException;
 	
 	/**
-	 * Starts the CPU and the execution of the program.
+	 * Starts the execution of the program.
 	 * 
 	 * The first instruction of the program is assumed
 	 * to be found on the address 0 of the attached bus.
 	 * @throws NoBusSetException If no bus has been previously set
 	 */
-	public void start() throws NoBusSetException;
+	public void run() throws NoBusSetException;
 }
