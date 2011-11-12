@@ -53,7 +53,6 @@ public class MemoryContentModel extends AbstractTableModel implements DeviceObse
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		// TODO implement memory content model value at
 		if (columnIndex == 0) {
 			return rowIndex;
 		} else {
