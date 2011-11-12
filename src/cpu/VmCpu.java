@@ -1,7 +1,9 @@
 package cpu;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import util.Entry;
 import cpu.instpar.InstructionParameter;
@@ -27,6 +29,7 @@ import cpu.instruction.Ret;
 import cpu.instruction.Test;
 import device.AddressingException;
 import device.Bus;
+import device.DeviceObserver;
 
 public class VmCpu implements Cpu, InstructionRunner {
 	private Bus bus = null;
@@ -34,7 +37,8 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private InstructionIdentifier id = new InstructionIdentifier();
 	private Map<REGISTER_NAME, Integer> registers;
 	private Map<FLAG_NAME, Boolean> flags;
-	private VmStack stack = new VmStack();
+	private VmStack stack;
+	private Set<DeviceObserver> pcObservers = new HashSet<DeviceObserver>();
 	
 	/**
 	 * Initializes the CPU
@@ -62,22 +66,96 @@ public class VmCpu implements Cpu, InstructionRunner {
 		id.addInstruction("RET", new Ret());
 		id.addInstruction("TEST", new Test());
 		
-		// init registers
+		reset();
+	}
+	
+	@Override
+	public void setBus(Bus bus) {
+		this.bus = bus;
+	}
+	
+	public void reset() {
+		notifyPcObservers(pc.getState());
+		pc.reset();
+		notifyPcObservers(pc.getState());
+		
+		stack = new VmStack();
+		
+		// reset registers
 		registers = new HashMap<InstructionRunner.REGISTER_NAME, Integer>();
 		for (REGISTER_NAME register : REGISTER_NAME.values()) {
 			registers.put(register, 0);
 		}
 		
-		// init flags
+		// reset flags
 		flags = new HashMap<InstructionRunner.FLAG_NAME, Boolean>();
 		for (FLAG_NAME flag : FLAG_NAME.values()) {
 			flags.put(flag, false);
 		}
 	}
 	
+	public void addPcObserver(DeviceObserver observer) {
+		pcObservers.add(observer);
+	}
+	
+	private void notifyPcObservers(int address) {
+		for (DeviceObserver observer : pcObservers) {
+			observer.fireDataChange(address);
+		}
+	}
+	
+	private void executeNextInstruction() {
+		// store pc current state
+		int currentPcState = pc.getState();
+		
+		// fetch instruction from memory pointed by pc
+		// using bus
+		String word = fetchWord(currentPcState);
+		
+		// id instruction
+		Entry<Instruction, InstructionParameter[]> instructionWithParameters = null;
+		try {
+			instructionWithParameters = id.identify(word);
+		} catch (UnidentifiableInstructionException e) {
+			// TODO call sw exception routine
+			e.printStackTrace();
+		}
+		
+		Instruction instruction = instructionWithParameters.getKey();
+		InstructionParameter[] parameters = instructionWithParameters.getValue();
+		
+		// execute instruction
+		try {
+			instruction.execute(this, parameters);
+		} catch (InvalidInstructionException e) {
+			// TODO call sw exception routine
+			e.printStackTrace();
+		} catch (InvalidParameterException e) {
+			// TODO call sw exception routine
+			e.printStackTrace();
+		}
+		
+		// increment pc if not jump
+		if (currentPcState == pc.getState()) {
+			pc.increment();
+		}		
+	}
+	
 	@Override
-	public void setBus(Bus bus) {
-		this.bus = bus;
+	public void step() throws NoBusSetException {
+		if (bus == null) {
+			throw new NoBusSetException();
+		}
+		
+		if (stack.getCurrentFrameIndex() >= 0) {
+			int currentPcState = pc.getState();
+			
+			executeNextInstruction();
+			
+			// notify pc observers about pc state change
+			notifyPcObservers(currentPcState);
+			notifyPcObservers(pc.getState());
+		}
 	}
 
 	@Override
@@ -88,40 +166,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 		
 		// while the are stack frames
 		while (stack.getCurrentFrameIndex() >= 0) {
-			// store pc current state
-			int currentPcState = pc.getState();
-			
-			// fetch instruction from memory pointed by pc
-			// using bus
-			String word = fetchWord(currentPcState);
-			
-			// id instruction
-			Entry<Instruction, InstructionParameter[]> instructionWithParameters = null;
-			try {
-				instructionWithParameters = id.identify(word);
-			} catch (UnidentifiableInstructionException e) {
-				// TODO call sw exception routine
-				e.printStackTrace();
-			}
-			
-			Instruction instruction = instructionWithParameters.getKey();
-			InstructionParameter[] parameters = instructionWithParameters.getValue();
-			
-			// execute instruction
-			try {
-				instruction.execute(this, parameters);
-			} catch (InvalidInstructionException e) {
-				// TODO call sw exception routine
-				e.printStackTrace();
-			} catch (InvalidParameterException e) {
-				// TODO call sw exception routine
-				e.printStackTrace();
-			}
-			
-			// increment pc if not jump
-			if (currentPcState == pc.getState()) {
-				pc.increment();
-			}
+			executeNextInstruction();
 		}
 	}
 	
@@ -212,4 +257,8 @@ public class VmCpu implements Cpu, InstructionRunner {
 		pc.jump(address);
 	}
 
+	@Override
+	public int getPcState() {
+		return pc.getState();
+	}
 }

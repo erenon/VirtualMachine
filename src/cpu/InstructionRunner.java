@@ -40,4 +40,5 @@ public interface InstructionRunner {
 	public void setFlag(FLAG_NAME flag, boolean value) throws InvalidFlagException;
 	public boolean getFlag(FLAG_NAME flag) throws InvalidFlagException;
 	public void jump(int address);
+	public int getPcState();
 }

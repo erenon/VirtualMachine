@@ -31,4 +31,11 @@ class ProgramCounter {
 	public void jump(int address) {
 		state = address;
 	}
+	
+	/**
+	 * Resets the state counter
+	 */
+	public void reset() {
+		state = 0;
+	}
 }

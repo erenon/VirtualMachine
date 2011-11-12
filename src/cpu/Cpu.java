@@ -8,6 +8,10 @@ public interface Cpu {
 	 * @param bus
 	 */
 	public void setBus(Bus bus);
+	
+	public void reset();
+	public void step() throws NoBusSetException;
+	
 	/**
 	 * Starts the CPU and the execution of the program.
 	 * 
