@@ -38,7 +38,6 @@ public class VmCpu implements Cpu, InstructionRunner {
 	private Map<REGISTER_NAME, Integer> registers;
 	private Map<FLAG_NAME, Boolean> flags;
 	private VmStack stack;
-	private Set<DeviceObserver> pcObservers = new HashSet<DeviceObserver>();
 	private Set<DeviceObserver> registerObservers = new HashSet<DeviceObserver>();
 	
 	/**
@@ -76,10 +75,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 	}
 	
 	public void reset() {
-		notifyPcObservers(pc.getState());
 		pc.reset();
-		notifyPcObservers(pc.getState());
-		
 		stack = new VmStack();
 		
 		// reset registers
@@ -97,13 +93,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 	}
 	
 	public void addPcObserver(DeviceObserver observer) {
-		pcObservers.add(observer);
-	}
-	
-	private void notifyPcObservers(int address) {
-		for (DeviceObserver observer : pcObservers) {
-			observer.fireDataChange(address);
-		}
+		pc.addObserver(observer);
 	}
 	
 	public void addRegisterObserver(DeviceObserver observer) {
@@ -172,13 +162,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 		}
 		
 		if (stack.getCurrentFrameIndex() >= 0) {
-			int currentPcState = pc.getState();
-			
 			executeNextInstruction();
-			
-			// notify pc observers about pc state change
-			notifyPcObservers(currentPcState);
-			notifyPcObservers(pc.getState());
 		}
 	}
 
@@ -188,16 +172,10 @@ public class VmCpu implements Cpu, InstructionRunner {
 			throw new NoBusSetException();
 		}
 		
-		int currentPcState = pc.getState();
-		
 		// while the are stack frames
 		while (stack.getCurrentFrameIndex() >= 0) {
 			executeNextInstruction();
 		}
-		
-		// notify pc observers about pc state change
-		notifyPcObservers(currentPcState);
-		notifyPcObservers(pc.getState());
 	}
 	
 	public String fetchWord(int address) {
