@@ -4,6 +4,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 import ui.controller.ComputerController;
+import ui.controller.MemoryController;
 import ui.model.DisplayModel;
 
 public class FrontView extends javax.swing.JFrame {
@@ -35,6 +36,7 @@ public class FrontView extends javax.swing.JFrame {
 				: memoryContentView;
 		menuBar = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
+		newMenuItem = new javax.swing.JMenuItem();
 		openMenuItem = new javax.swing.JMenuItem();
 		saveMenuItem = new javax.swing.JMenuItem();
 		saveAsMenuItem = new javax.swing.JMenuItem();
@@ -86,13 +88,37 @@ public class FrontView extends javax.swing.JFrame {
 
 		fileMenu.setText("File");
 
-		openMenuItem.setText("Open");
+		newMenuItem.setText("New");
+		newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				newMenuItemActionPerformed(evt);
+			}
+		});
+
+		fileMenu.add(newMenuItem);
+
+		openMenuItem.setText("Open ...");
+		openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				openMenuItemActionPerformed(evt);
+			}
+		});
 		fileMenu.add(openMenuItem);
 
 		saveMenuItem.setText("Save");
+		saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				saveMenuItemActionPerformed(evt);
+			}
+		});
 		fileMenu.add(saveMenuItem);
 
 		saveAsMenuItem.setText("Save As ...");
+		saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				saveAsMenuItemActionPerformed(evt);
+			}
+		});
 		fileMenu.add(saveAsMenuItem);
 
 		exitMenuItem.setText("Exit");
@@ -219,9 +245,25 @@ public class FrontView extends javax.swing.JFrame {
 	private void buttonStepActionPerformed(java.awt.event.ActionEvent evt) {
 		computerController.stepButtonClicked(evt);
 	}
-	
+
 	private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {
 		computerController.runButtonClicked(evt);
+	}
+	
+	private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		memoryController.newMemoryContent(evt);
+	}
+
+	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		memoryController.loadMemoryContent(evt);
+	}
+	
+	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		memoryController.storeMemoryContent(evt);
+	}
+	
+	private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		memoryController.storeMemoryContentAs(evt);
 	}
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -259,8 +301,12 @@ public class FrontView extends javax.swing.JFrame {
 		registerContentModel = model;
 	}
 
-	public void setComputerController(ComputerController computerController) {
-		this.computerController = computerController;
+	public void setComputerController(ComputerController controller) {
+		computerController = controller;
+	}
+
+	public void setMemoryController(MemoryController controller) {
+		memoryController = controller;
 	}
 
 	public void init() {
@@ -296,6 +342,7 @@ public class FrontView extends javax.swing.JFrame {
 	private javax.swing.JLabel labelRegisters;
 	private javax.swing.JTable memoryContentView;
 	private javax.swing.JMenuBar menuBar;
+	private javax.swing.JMenuItem newMenuItem;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JTextArea outputTextarea;
 	private javax.swing.JTable registerContentView;
@@ -310,5 +357,6 @@ public class FrontView extends javax.swing.JFrame {
 
 	// controllers
 	private ComputerController computerController;
+	private MemoryController memoryController;
 
 }

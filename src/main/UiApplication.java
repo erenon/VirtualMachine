@@ -9,6 +9,7 @@ import device.StdOut;
 import device.VmDisplay;
 import device.VmMemory;
 import ui.controller.ComputerController;
+import ui.controller.MemoryController;
 import ui.model.DisplayModel;
 import ui.model.MemoryContentModel;
 import ui.model.RegisterContentModel;
@@ -52,8 +53,8 @@ public class UiApplication {
 		cpu.addPcObserver(memoryContentModel);
 		memory.addContentObserver(memoryContentModel);
 		
-		MemoryContentView memoryContentView = new MemoryContentView();
-		view.setMemoryContentView(memoryContentView);
+		view.setMemoryContentView(new MemoryContentView());
+		view.setMemoryController(new MemoryController(memory, memorySize));
 		
 		
 		// display
