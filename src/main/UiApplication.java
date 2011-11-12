@@ -25,14 +25,13 @@ public class UiApplication {
 		final FrontView view = new FrontView();
 		
 		// create computer
-		Computer computer = new Computer();
+		VmCpu cpu = new VmCpu();
+		Computer computer = new Computer(cpu);
 		ComputerController computerController = new ComputerController(computer);
 		view.setComputerController(computerController);
 		
 		// cpu
-		VmCpu cpu = new VmCpu();
 		InstructionRunner runner = (InstructionRunner) cpu;
-		computer.setCpu(cpu);
 		
 		// register observers
 		RegisterContentModel registerContentModel = new RegisterContentModel(runner);

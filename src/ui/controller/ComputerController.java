@@ -3,7 +3,6 @@ package ui.controller;
 import java.awt.event.ActionEvent;
 
 import computer.Computer;
-import computer.NoCpuSetException;
 import cpu.NoBusSetException;
 
 public class ComputerController {
@@ -14,19 +13,20 @@ public class ComputerController {
 	}
 
 	public void stepButtonClicked(ActionEvent event) {
-		try {
-			computer.step();
-		} catch (NoCpuSetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoBusSetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		computer.step();
 	}
 	
 	public void resetButtonClicked(ActionEvent event) {
 		computer.reset();
+	}
+	
+	public void runButtonClicked(ActionEvent event) {
+		try {
+			computer.run();
+		} catch (NoBusSetException e) {
+			// must set bus first
+			e.printStackTrace();
+		}
 	}
 
 }

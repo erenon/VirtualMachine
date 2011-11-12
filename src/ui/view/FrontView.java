@@ -58,6 +58,11 @@ public class FrontView extends javax.swing.JFrame {
 		jScrollPane3.setViewportView(registerContentView);
 
 		buttonRun.setText("Run");
+		buttonRun.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				buttonRunActionPerformed(evt);
+			}
+		});
 
 		buttonStep.setText("Step");
 		buttonStep.addActionListener(new java.awt.event.ActionListener() {
@@ -213,6 +218,10 @@ public class FrontView extends javax.swing.JFrame {
 
 	private void buttonStepActionPerformed(java.awt.event.ActionEvent evt) {
 		computerController.stepButtonClicked(evt);
+	}
+	
+	private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {
+		computerController.runButtonClicked(evt);
 	}
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
