@@ -25,12 +25,14 @@ public class FrontView extends javax.swing.JFrame {
 		jScrollPane2 = new javax.swing.JScrollPane();
 		outputTextarea = new javax.swing.JTextArea();
 		jScrollPane3 = new javax.swing.JScrollPane();
-		registerTable = new javax.swing.JTable();
+		registerContentView = (registerContentView == null) ? new JTable()
+				: registerContentView;
 		buttonRun = new javax.swing.JButton();
 		buttonStep = new javax.swing.JButton();
 		buttonRestart = new javax.swing.JButton();
 		jScrollPane1 = new javax.swing.JScrollPane();
-		memoryContent = (memoryContent == null) ? new JTable() : memoryContent;
+		memoryContentView = (memoryContentView == null) ? new JTable()
+				: memoryContentView;
 		menuBar = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
 		openMenuItem = new javax.swing.JMenuItem();
@@ -52,12 +54,8 @@ public class FrontView extends javax.swing.JFrame {
 		displayModel.setTextarea(outputTextarea);
 		jScrollPane2.setViewportView(outputTextarea);
 
-		registerTable.setModel(new javax.swing.table.DefaultTableModel(
-				new Object[][] { { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null } }, new String[] { "Title 1",
-						"Title 2", "Title 3", "Title 4" }));
-		jScrollPane3.setViewportView(registerTable);
+		registerContentView.setModel(registerContentModel);
+		jScrollPane3.setViewportView(registerContentView);
 
 		buttonRun.setText("Run");
 
@@ -75,11 +73,11 @@ public class FrontView extends javax.swing.JFrame {
 			}
 		});
 
-		memoryContent.setModel(memoryContentModel);
-		memoryContent.setAutoCreateRowSorter(true);
-		memoryContent.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-		memoryContent.setCellSelectionEnabled(true);
-		jScrollPane1.setViewportView(memoryContent);
+		memoryContentView.setModel(memoryContentModel);
+		memoryContentView.setAutoCreateRowSorter(true);
+		memoryContentView.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+		memoryContentView.setCellSelectionEnabled(true);
+		jScrollPane1.setViewportView(memoryContentView);
 
 		fileMenu.setText("File");
 
@@ -111,37 +109,17 @@ public class FrontView extends javax.swing.JFrame {
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-								.addContainerGap(
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
+								.addContainerGap()
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-																.addComponent(
-																		labelMemory)
-																.addGroup(
-																		javax.swing.GroupLayout.Alignment.TRAILING,
-																		layout.createSequentialGroup()
-																				.addComponent(
-																						buttonRestart)
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																				.addComponent(
-																						buttonStep)
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																				.addComponent(
-																						buttonRun)))
+												.addComponent(labelMemory)
 												.addComponent(
 														jScrollPane1,
 														javax.swing.GroupLayout.PREFERRED_SIZE,
 														238,
 														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGap(18, 18, 18)
 								.addGroup(
 										layout.createParallelGroup(
 												javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,11 +130,26 @@ public class FrontView extends javax.swing.JFrame {
 														javax.swing.GroupLayout.PREFERRED_SIZE)
 												.addComponent(
 														labelDisplayOutput))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGap(18, 18, 18)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
+												javax.swing.GroupLayout.Alignment.LEADING,
+												false)
+												.addGroup(
+														layout.createSequentialGroup()
+																.addComponent(
+																		buttonRestart)
+																.addGap(18, 18,
+																		18)
+																.addComponent(
+																		buttonStep)
+																.addGap(18, 18,
+																		18)
+																.addComponent(
+																		buttonRun,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		Short.MAX_VALUE))
 												.addComponent(labelRegisters)
 												.addComponent(
 														jScrollPane3,
@@ -180,30 +173,30 @@ public class FrontView extends javax.swing.JFrame {
 										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addGroup(
 										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(
-														jScrollPane3,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														418, Short.MAX_VALUE)
+												javax.swing.GroupLayout.Alignment.TRAILING)
 												.addGroup(
 														layout.createSequentialGroup()
 																.addComponent(
-																		jScrollPane1,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		384,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
+																		jScrollPane3,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		379,
+																		Short.MAX_VALUE)
 																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 																.addGroup(
 																		layout.createParallelGroup(
 																				javax.swing.GroupLayout.Alignment.BASELINE)
 																				.addComponent(
-																						buttonRun)
+																						buttonRestart)
 																				.addComponent(
 																						buttonStep)
 																				.addComponent(
-																						buttonRestart))
-																.addGap(1, 1, 1))
+																						buttonRun)))
+												.addComponent(
+														jScrollPane1,
+														javax.swing.GroupLayout.Alignment.LEADING,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														418, Short.MAX_VALUE)
 												.addComponent(
 														jScrollPane2,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -238,7 +231,11 @@ public class FrontView extends javax.swing.JFrame {
 	}
 
 	public void setMemoryContentView(JTable view) {
-		memoryContent = view;
+		memoryContentView = view;
+	}
+
+	public void setRegisterContentView(JTable view) {
+		registerContentView = view;
 	}
 
 	public void setMemoryContentModel(TableModel model) {
@@ -247,6 +244,10 @@ public class FrontView extends javax.swing.JFrame {
 
 	public void setDisplayModel(DisplayModel model) {
 		displayModel = model;
+	}
+
+	public void setRegisterContentModel(TableModel model) {
+		registerContentModel = model;
 	}
 
 	public void setComputerController(ComputerController computerController) {
@@ -258,11 +259,16 @@ public class FrontView extends javax.swing.JFrame {
 
 		setTitle("VirtualMachine");
 
-		memoryContent
-				.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-		memoryContent.getColumnModel().getColumn(0).setPreferredWidth(24);
-		memoryContent.getColumnModel().getColumn(0).setMinWidth(24);
-		memoryContent.getColumnModel().getColumn(0).setMaxWidth(48);
+		memoryContentView.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		memoryContentView.getColumnModel().getColumn(0).setPreferredWidth(24);
+		memoryContentView.getColumnModel().getColumn(0).setMinWidth(24);
+		memoryContentView.getColumnModel().getColumn(0).setMaxWidth(48);
+
+		registerContentView.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		registerContentView.getColumnModel().getColumn(0).setPreferredWidth(30);
+		/*registerContentView.getColumnModel().getColumn(0).setMinWidth(30);*/
+		registerContentView.getColumnModel().getColumn(0).setMaxWidth(30);
+		registerContentView.getColumnModel().getColumn(0).setResizable(false);
 
 	}
 
@@ -279,11 +285,11 @@ public class FrontView extends javax.swing.JFrame {
 	private javax.swing.JLabel labelDisplayOutput;
 	private javax.swing.JLabel labelMemory;
 	private javax.swing.JLabel labelRegisters;
-	private javax.swing.JTable memoryContent;
+	private javax.swing.JTable memoryContentView;
 	private javax.swing.JMenuBar menuBar;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JTextArea outputTextarea;
-	private javax.swing.JTable registerTable;
+	private javax.swing.JTable registerContentView;
 	private javax.swing.JMenuItem saveAsMenuItem;
 	private javax.swing.JMenuItem saveMenuItem;
 	// End of variables declaration//GEN-END:variables
@@ -291,6 +297,7 @@ public class FrontView extends javax.swing.JFrame {
 	// models
 	private TableModel memoryContentModel;
 	private DisplayModel displayModel;
+	private TableModel registerContentModel;
 
 	// controllers
 	private ComputerController computerController;

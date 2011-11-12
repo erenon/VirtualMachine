@@ -59,29 +59,27 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="labelMemory" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="buttonRestart" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="buttonStep" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="buttonRun" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="labelMemory" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="238" max="-2" attributes="1"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane2" alignment="0" min="-2" pref="351" max="-2" attributes="0"/>
-                  <Component id="labelDisplayOutput" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="351" max="-2" attributes="0"/>
+                  <Component id="labelDisplayOutput" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="1">
+                      <Component id="buttonRestart" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="buttonStep" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="buttonRun" max="32767" attributes="0"/>
+                  </Group>
                   <Component id="labelRegisters" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" alignment="0" min="-2" pref="273" max="-2" attributes="0"/>
+                  <Component id="jScrollPane3" min="-2" pref="273" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -97,19 +95,18 @@
                   <Component id="labelRegisters" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane3" pref="418" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPane1" min="-2" pref="384" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jScrollPane3" pref="379" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="buttonRun" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="buttonStep" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonRestart" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonRun" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="1" pref="1" max="1" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane2" alignment="0" pref="418" max="32767" attributes="1"/>
+                  <Component id="jScrollPane1" alignment="0" pref="418" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="418" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -158,17 +155,15 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="registerTable">
+        <Component class="javax.swing.JTable" name="registerContentView">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
-              </Table>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="registerContentModel" type="code"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="(registerContentView == null) ? new JTable() : registerContentView;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -200,7 +195,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="memoryContent">
+        <Component class="javax.swing.JTable" name="memoryContentView">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="memoryContentModel" type="code"/>
@@ -212,7 +207,7 @@
             <Property name="cellSelectionEnabled" type="boolean" value="true"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="(memoryContent == null) ? new JTable() : memoryContent;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="(memoryContentView == null) ? new JTable() : memoryContentView;"/>
           </AuxValues>
         </Component>
       </SubComponents>
