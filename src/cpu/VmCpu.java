@@ -8,8 +8,13 @@ import java.util.Set;
 import util.Entry;
 import cpu.instpar.InstructionParameter;
 import cpu.instpar.InvalidParameterException;
+import cpu.instruction.Add;
+import cpu.instruction.And;
+import cpu.instruction.Call;
 import cpu.instruction.Cmp;
+import cpu.instruction.Dec;
 import cpu.instruction.In;
+import cpu.instruction.Inc;
 import cpu.instruction.Instruction;
 import cpu.instruction.InvalidInstructionException;
 import cpu.instruction.Je;
@@ -22,11 +27,16 @@ import cpu.instruction.Jne;
 import cpu.instruction.Jno;
 import cpu.instruction.Jo;
 import cpu.instruction.Mov;
+import cpu.instruction.Mul;
+import cpu.instruction.Not;
+import cpu.instruction.Or;
 import cpu.instruction.Out;
 import cpu.instruction.Pop;
 import cpu.instruction.Push;
 import cpu.instruction.Ret;
+import cpu.instruction.Sub;
 import cpu.instruction.Test;
+import cpu.instruction.Xor;
 import device.AddressingException;
 import device.Bus;
 import device.DeviceObserver;
@@ -48,8 +58,13 @@ public class VmCpu implements Cpu, InstructionRunner {
 	 */
 	public VmCpu() {
 		// load available instructions
+		id.addInstruction("ADD", new Add());
+		id.addInstruction("AND", new And());
+		id.addInstruction("CALL", new Call());
 		id.addInstruction("CMP", new Cmp());
+		id.addInstruction("DEC", new Dec());
 		id.addInstruction("IN", new In());
+		id.addInstruction("INC", new Inc());
 		id.addInstruction("JE", new Je());
 		id.addInstruction("JG", new Jg());
 		id.addInstruction("JGE", new Jge());
@@ -60,11 +75,16 @@ public class VmCpu implements Cpu, InstructionRunner {
 		id.addInstruction("JNO", new Jno());
 		id.addInstruction("JO", new Jo());
 		id.addInstruction("MOV", new Mov());
+		id.addInstruction("MUL", new Mul());
+		id.addInstruction("NOT", new Not());
+		id.addInstruction("OR", new Or());
 		id.addInstruction("OUT", new Out());
 		id.addInstruction("POP", new Pop());
 		id.addInstruction("PUSH", new Push());
 		id.addInstruction("RET", new Ret());
+		id.addInstruction("SUB", new Sub());
 		id.addInstruction("TEST", new Test());
+		id.addInstruction("XOR", new Xor());
 		
 		reset();
 	}
@@ -232,6 +252,11 @@ public class VmCpu implements Cpu, InstructionRunner {
 	@Override
 	public void decreaseStackframe() {
 		stack.decreaseStackFrame();
+	}
+	
+	@Override
+	public int getStackframeIndex() {
+		return stack.getCurrentFrameIndex();
 	}
 
 	@Override

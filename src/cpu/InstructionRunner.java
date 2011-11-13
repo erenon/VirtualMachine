@@ -35,6 +35,7 @@ public interface InstructionRunner {
 	public void putWord(int address, String word);
 	public void increaseStackframe();
 	public void decreaseStackframe();
+	public int getStackframeIndex();
 	public void pushStack(int value);
 	public int popStack();
 	public void setFlag(FLAG_NAME flag, boolean value) throws InvalidFlagException;
