@@ -13,6 +13,7 @@ import cpu.instruction.And;
 import cpu.instruction.Call;
 import cpu.instruction.Cmp;
 import cpu.instruction.Dec;
+import cpu.instruction.Div;
 import cpu.instruction.In;
 import cpu.instruction.Inc;
 import cpu.instruction.Instruction;
@@ -63,6 +64,7 @@ public class VmCpu implements Cpu, InstructionRunner {
 		id.addInstruction("CALL", new Call());
 		id.addInstruction("CMP", new Cmp());
 		id.addInstruction("DEC", new Dec());
+		id.addInstruction("DIV", new Div());
 		id.addInstruction("IN", new In());
 		id.addInstruction("INC", new Inc());
 		id.addInstruction("JE", new Je());

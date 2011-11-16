@@ -19,7 +19,7 @@ public class Sub extends ArithmeticInstruction implements Instruction {
 		int paramB = parameters[1].loadValue(runner);
 		
 		// subtract the two parameters
-		Long diff = ((long)paramA) - paramB;
+		Long diff = ((long)paramB) - paramA;
 		
 		// store the result in dest
 		parameters[1].storeValue(runner, diff.intValue());

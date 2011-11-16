@@ -19,7 +19,7 @@ public class Div extends ArithmeticInstruction implements Instruction {
 		int paramB = parameters[1].loadValue(runner);
 		
 		// divide the two parameters
-		Long div = ((long)paramA) / paramB;
+		Long div = ((long)paramB) / paramA;
 		
 		// store the result in dest
 		parameters[1].storeValue(runner, div.intValue());
