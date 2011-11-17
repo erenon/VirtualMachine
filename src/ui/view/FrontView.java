@@ -240,6 +240,7 @@ public class FrontView extends javax.swing.JFrame {
 
 	private void buttonRestartActionPerformed(java.awt.event.ActionEvent evt) {
 		computerController.resetButtonClicked(evt);
+		outputTextarea.setText(null);
 	}
 
 	private void buttonStepActionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,17 +270,8 @@ public class FrontView extends javax.swing.JFrame {
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
 		System.exit(0);
 	}//GEN-LAST:event_exitMenuItemActionPerformed
-
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new FrontView().setVisible(true);
-			}
-		});
-	}
+	
+	// custom methods
 
 	public void setMemoryContentView(JTable view) {
 		memoryContentView = view;
@@ -324,6 +316,8 @@ public class FrontView extends javax.swing.JFrame {
 		/*registerContentView.getColumnModel().getColumn(0).setMinWidth(30);*/
 		registerContentView.getColumnModel().getColumn(0).setMaxWidth(30);
 		registerContentView.getColumnModel().getColumn(0).setResizable(false);
+		
+		outputTextarea.setLineWrap(true);
 
 	}
 
