@@ -4,7 +4,7 @@ import computer.Computer;
 import cpu.InstructionRunner;
 import cpu.VmCpu;
 
-import device.AddressingException;
+//import device.AddressingException;
 import device.StdOut;
 import device.VmDisplay;
 import device.VmMemory;
@@ -44,7 +44,7 @@ public class UiApplication {
 		// create memory
 		int memorySize = 1024;
 		VmMemory memory = new VmMemory(memorySize);
-		setMemoryContent(memory);
+		//setMemoryContent(memory);
 		computer.addDevice(memory, memorySize);
 		
 		MemoryContentModel memoryContentModel = new MemoryContentModel(memory, memorySize, runner);
@@ -77,7 +77,7 @@ public class UiApplication {
 		});
 	}
 	
-	public static void setMemoryContent(VmMemory memory) {
+	/*public static void setMemoryContent(VmMemory memory) {
 		// TODO remove this demo method
 		try {
 			memory.putWord(0, "OUT 1024 MEM[20]");
@@ -98,6 +98,6 @@ public class UiApplication {
 		} catch (AddressingException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 }
